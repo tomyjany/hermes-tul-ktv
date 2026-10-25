@@ -43,17 +43,15 @@ def _sauna(name: str, place: str) -> Activity:
     ("name", "place", "gender", "allowed"),
     [
         ("Sauna MUŽI", "SAUNA mužská šatna", Gender.MALE, True),
-        ("Sauna MUŽI", "SAUNA ženská šatna", Gender.MALE, True),  # men-only block uses both rooms
+        ("Sauna MUŽI", "SAUNA ženská šatna", Gender.MALE, False),  # always your own changing room
         ("Sauna MUŽI", "SAUNA mužská šatna", Gender.FEMALE, False),
         ("Sauna ŽENY", "SAUNA ženská šatna", Gender.FEMALE, True),
-        ("Sauna ŽENY", "SAUNA mužská šatna", Gender.MALE, False),
-        ("Sauna SPOLEČNÁ", "SAUNA mužská šatna", Gender.MALE, True),
-        ("Sauna SPOLEČNÁ", "SAUNA ženská šatna", Gender.MALE, False),  # mixed: own changing room only
-        ("Sauna SPOLEČNÁ", "SAUNA ženská šatna", Gender.FEMALE, True),
+        ("Sauna ŽENY", "SAUNA ženská šatna", Gender.MALE, False),
+        ("Sauna SPOLEČNÁ", "SAUNA mužská šatna", Gender.MALE, False),  # no gender in the title
         ("Sauna DĚTI", "SAUNA mužská šatna", Gender.MALE, False),  # unknown session type is refused
-        ("Sauna SPOLEČNÁ", "SAUNA", Gender.MALE, False),  # unknown room is refused
-        ("Sauna SPOLEČNÁ (MUŽI)", "SAUNA ženská šatna", Gender.MALE, True),  # seen in real history: men-only
-        ("Sauna SPOLEČNÁ (MUŽI)", "SAUNA ženská šatna", Gender.FEMALE, False),
+        ("Sauna MUŽI", "SAUNA", Gender.MALE, False),  # unknown room is refused
+        ("Sauna SPOLEČNÁ (MUŽI)", "SAUNA mužská šatna", Gender.MALE, True),  # seen in real history
+        ("Sauna SPOLEČNÁ (MUŽI)", "SAUNA ženská šatna", Gender.MALE, False),
     ],
 )
 def test_sauna_gender_rules(name, place, gender, allowed):

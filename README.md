@@ -27,13 +27,15 @@ contains `ktv-activity-id: N` so it can be found again).
 
 ### Sauna rules
 
-The calendar has three block types, each offered in two changing-room rows
-(`SAUNA mužská šatna`, `SAUNA ženská šatna`):
+Sauna blocks are titled `Sauna MUŽI`, `Sauna ŽENY` or `Sauna SPOLEČNÁ` (sometimes with a gender
+suffix such as `Sauna SPOLEČNÁ (MUŽI)`) and listed in two changing-room rows
+(`SAUNA mužská šatna`, `SAUNA ženská šatna`). The server is deliberately conservative and only
+books a block when **both** hold:
 
-- **Sauna MUŽI** / **Sauna ŽENY** – single-gender block; that gender may use either row.
-- **Sauna SPOLEČNÁ** – mixed block; you may only book the row of your own changing room.
+- the block title names your gender (MUŽI for `male`, ŽENY for `female`), and
+- the row is your own changing room.
 
-Unknown block types or rooms are refused rather than guessed.
+Plain mixed blocks and unknown block types or rooms are refused rather than guessed.
 
 ## Setup
 

@@ -93,9 +93,9 @@ def changing_room_gender(place: str) -> Gender | None:
 def sauna_allowed(activity: Activity, gender: Gender) -> tuple[bool, str]:
     """Whether a person of ``gender`` may book this sauna block.
 
-    Single-gender blocks (MUŽI / ŽENY) are open to that gender in both changing rooms.
-    Mixed blocks (SPOLEČNÁ) require the changing room of your own gender.
-    Anything unrecognised is refused rather than guessed.
+    Conservative rule: the block title must name your gender (``Sauna MUŽI``, ``Sauna ŽENY``,
+    ``Sauna SPOLEČNÁ (MUŽI)``) AND the row must be your own changing room. Plain mixed blocks
+    (``Sauna SPOLEČNÁ``) and anything unrecognised are refused rather than guessed.
     """
     if gender not in (Gender.MALE, Gender.FEMALE):
         return False, "gender must be 'male' or 'female'"
@@ -104,11 +104,11 @@ def sauna_allowed(activity: Activity, gender: Gender) -> tuple[bool, str]:
     if session is None:
         return False, f"unrecognised sauna session type in {activity.name!r}"
     if session is Gender.MIXED:
-        if room is None:
-            return False, f"unrecognised changing room in {activity.place!r}"
-        if room is not gender:
-            return False, f"mixed sauna: {activity.place!r} is the {room.value} changing room"
-        return True, "mixed sauna, matching changing room"
+        return False, f"{activity.name!r} is a mixed block without a gender in its title"
     if session is not gender:
         return False, f"{activity.name!r} is a {session.value}-only sauna block"
-    return True, f"{session.value}-only sauna block"
+    if room is None:
+        return False, f"unrecognised changing room in {activity.place!r}"
+    if room is not gender:
+        return False, f"{activity.place!r} is the {room.value} changing room"
+    return True, f"{session.value} block in the {room.value} changing room"
