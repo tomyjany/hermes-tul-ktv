@@ -47,7 +47,9 @@ def _sauna(name: str, place: str) -> Activity:
         ("Sauna MUŽI", "SAUNA mužská šatna", Gender.FEMALE, False),
         ("Sauna ŽENY", "SAUNA ženská šatna", Gender.FEMALE, True),
         ("Sauna ŽENY", "SAUNA ženská šatna", Gender.MALE, False),
-        ("Sauna SPOLEČNÁ", "SAUNA mužská šatna", Gender.MALE, False),  # no gender in the title
+        ("Sauna SPOLEČNÁ", "SAUNA mužská šatna", Gender.MALE, True),  # mixed block, own changing room
+        ("Sauna SPOLEČNÁ", "SAUNA ženská šatna", Gender.MALE, False),  # mixed block, other room
+        ("Sauna SPOLEČNÁ", "SAUNA ženská šatna", Gender.FEMALE, True),
         ("Sauna DĚTI", "SAUNA mužská šatna", Gender.MALE, False),  # unknown session type is refused
         ("Sauna MUŽI", "SAUNA", Gender.MALE, False),  # unknown room is refused
         ("Sauna SPOLEČNÁ (MUŽI)", "SAUNA mužská šatna", Gender.MALE, True),  # seen in real history

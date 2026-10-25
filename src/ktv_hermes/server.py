@@ -77,7 +77,7 @@ def find_gym_slots(date_from: str | None = None, date_to: str | None = None, onl
 def find_sauna_slots(date_from: str | None = None, date_to: str | None = None, only_available: bool = True,
                      gender: str | None = None) -> list[dict]:
     """List future sauna blocks (default: next 7 days). With only_available, shows only blocks the given gender
-    (default KTV_GENDER) may book: the title must name that gender (MUŽI/ŽENY) and the row must be its own changing room."""
+    (default KTV_GENDER) may book: always its own changing-room row, and a block for that gender (MUŽI/ŽENY) or mixed (SPOLEČNÁ)."""
     start, end = _range(date_from, date_to)
     return _service().find_slots(Kind.SAUNA, start, end, only_available=only_available, gender=_gender(gender))
 
