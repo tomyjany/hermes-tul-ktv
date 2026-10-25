@@ -119,17 +119,26 @@ class KTVClient:
     def enroll_form(self, activity_id: int) -> EnrollForm:
         if not self._logged_in:
             self.login()
+        snippet = self._enroll_snippet(activity_id)
+        if snippet is None:
+            # A long-lived process outlives the server-side session; the signal then returns no form.
+            self.login()
+            snippet = self._enroll_snippet(activity_id)
+        if snippet is None:
+            raise KTVError(f"no enroll form returned for activity {activity_id}")
+        return parse_enroll_form(snippet)
+
+    def _enroll_snippet(self, activity_id: int) -> str | None:
         resp = self._request(
             "GET",
             "/asc",
             params={"ascCalendarComponent-activityId": activity_id, "do": "ascCalendarComponent-enroll"},
             headers={"X-Requested-With": "XMLHttpRequest", "Accept": "application/json"},
         )
-        snippets = (resp.json().get("snippets") or {}) if "json" in resp.headers.get("content-type", "") else {}
-        snippet = next((v for k, v in snippets.items() if "enrollForm" in k), None)
-        if not snippet:
-            raise KTVError(f"no enroll form returned for activity {activity_id}")
-        return parse_enroll_form(snippet)
+        if "json" not in resp.headers.get("content-type", ""):
+            return None
+        snippets = resp.json().get("snippets") or {}
+        return next((v for k, v in snippets.items() if "enrollForm" in k), None)
 
     def _submit(self, activity_id: int, button: dict[str, str], want_enrolled: bool) -> tuple[EnrollForm, list[str]]:
         form = self.enroll_form(activity_id)
