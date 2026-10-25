@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ktv-hermes"
+version = "0.1.0"
+description = "MCP server for the TUL KTV sports-centre reservation system (rezervace.ktv.tul.cz): gym, sauna, history stats."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+  "beautifulsoup4>=4.12",
+  "certifi>=2024.2.2",
+  "mcp>=2.3,<3",
+  "python-dotenv>=1.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+ktv-hermes = "ktv_hermes.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ktv_hermes"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
